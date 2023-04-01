@@ -3,7 +3,7 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-String apiKey = "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";
+String apiKey = "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";
 
 class ApiServices {
   static String baseUrl = "https://api.openai.com/v1/completions";
@@ -18,6 +18,7 @@ class ApiServices {
         headers: header,
         body: jsonEncode({
           "model": "text-davinci-003",
+          // "prompt": "how the weather in seoul",
           "prompt": "$message",
           "temperature": 0,
           "max_tokens": 100,
@@ -28,11 +29,13 @@ class ApiServices {
         }));
 
     if (res.statusCode == 200) {
-      var data = jsonDecode(res.body.toString());
+      var data = jsonDecode(utf8.decode(res.bodyBytes));
+      // var data = jsonDecode(res.body.toString());
       var msg = data['choices'][0]['text'];
       return msg;
     } else {
       print('Failed to fetch data');
+      print(res.statusCode);
     }
   }
 }

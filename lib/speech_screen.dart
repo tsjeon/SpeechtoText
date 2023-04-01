@@ -91,7 +91,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
         ),
       ),
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+        //padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
         child: Column(
           children: [
             Text(
