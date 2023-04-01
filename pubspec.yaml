@@ -19,6 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  avatar_glow: ^2.0.2
 
 dev_dependencies:
   flutter_test:
