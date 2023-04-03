@@ -1,9 +1,12 @@
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:helloworld/api_services.dart';
 import 'package:helloworld/chat_model.dart';
 import 'package:helloworld/colors.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+// import 'package:permission_handler/permission_handler.dart';
 
 class SpeechScreen extends StatefulWidget {
   const SpeechScreen({super.key});
@@ -14,7 +17,8 @@ class SpeechScreen extends StatefulWidget {
 
 class _SpeechScreenState extends State<SpeechScreen> {
   SpeechToText speechToText = SpeechToText();
-  var text = 'Hold the button and start speaking';
+  var text = '버튼을 누르고 말하기를 시작하세요.';
+  // var text = 'Hold the button and start speaking';
   var isListening = false;
 
   final List<ChatMessage> messages = [];
@@ -40,6 +44,8 @@ class _SpeechScreenState extends State<SpeechScreen> {
         showTwoGlows: true,
         child: GestureDetector(
           onTapDown: (details) async {
+            // PermissionStatus status = await Permission.microphone.request();
+
             if (!isListening) {
               var available = await speechToText.initialize();
               if (available) {
@@ -83,7 +89,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
         backgroundColor: bgColor,
         elevation: 0.0,
         title: const Text(
-          'Voide ChatGPT',
+          'Voice AI ChatGPT',
           style: TextStyle(
             fontWeight: FontWeight.w600,
             color: textColor,
@@ -94,10 +100,11 @@ class _SpeechScreenState extends State<SpeechScreen> {
         //padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
         child: Column(
           children: [
+            const SizedBox(height: 10),
             Text(
               text,
               style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   color: isListening ? Colors.black87 : Colors.black54,
                   fontWeight: FontWeight.w600),
             ),
@@ -122,10 +129,10 @@ class _SpeechScreenState extends State<SpeechScreen> {
             )),
             const SizedBox(height: 12),
             const Text(
-              "Developed by tsjun Devs",
+              "Developed by TS.Jeon",
               style: TextStyle(
                   color: Colors.black54,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w600,
                   fontSize: 16),
             )
           ],
@@ -150,7 +157,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
             padding: const EdgeInsets.all(12),
             margin: const EdgeInsets.only(bottom: 12),
             decoration: BoxDecoration(
-                color: type == ChatMessageType.bot ? bgColor : Colors.white,
+                color: type == ChatMessageType.bot ? gptColor : Colors.white,
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(12),
                     bottomRight: Radius.circular(12),

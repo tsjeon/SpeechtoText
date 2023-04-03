@@ -22,6 +22,7 @@ dependencies:
   avatar_glow: ^2.0.2
   speech_to_text: ^6.1.1
   http: ^0.13.5
+  permission_handler: ^9.2.0
 
 dev_dependencies:
   flutter_test:
