@@ -5,8 +5,8 @@ import 'package:helloworld/api_services.dart';
 import 'package:helloworld/chat_model.dart';
 import 'package:helloworld/colors.dart';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-// import 'package:permission_handler/permission_handler.dart';
 
 class SpeechScreen extends StatefulWidget {
   const SpeechScreen({super.key});
@@ -30,6 +30,21 @@ class _SpeechScreenState extends State<SpeechScreen> {
         duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
   }
 
+  Future<bool> _getPermission() async {
+    var status = await Permission.microphone.status;
+    print(status);
+    if (status.isGranted) {
+      return true;
+    }
+    if (status.isDenied) {
+      var result = await Permission.microphone.request();
+      if (result.isGranted) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,20 +59,24 @@ class _SpeechScreenState extends State<SpeechScreen> {
         showTwoGlows: true,
         child: GestureDetector(
           onTapDown: (details) async {
-            // PermissionStatus status = await Permission.microphone.request();
-
             if (!isListening) {
-              var available = await speechToText.initialize();
-              if (available) {
+              if (await _getPermission()) {
+                var available = await speechToText.initialize();
+                if (available) {
+                  setState(() {
+                    isListening = true;
+                    speechToText.listen(
+                      onResult: (result) {
+                        setState(() {
+                          text = result.recognizedWords;
+                        });
+                      },
+                    );
+                  });
+                }
+              } else {
                 setState(() {
-                  isListening = true;
-                  speechToText.listen(
-                    onResult: (result) {
-                      setState(() {
-                        text = result.recognizedWords;
-                      });
-                    },
-                  );
+                  text = '오디오 권한이 없습니다.';
                 });
               }
             }
